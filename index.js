@@ -12,6 +12,9 @@ function Observable(value) {
         }
     }
 
+    observable._type = "observ"
+    observable._version = 0
+
     return observable
 
     function observable(listener) {
