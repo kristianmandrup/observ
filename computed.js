@@ -19,8 +19,8 @@ function computed(observables, lambda) {
 
     var result = Observable(lambda.apply(null, values))
 
-    computed.type = 'observ/computed'
-    computed.version = 0
+    computed._type = 'observ/computed'
+    computed._version = 1
 
     return result
 }

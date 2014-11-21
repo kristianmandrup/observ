@@ -13,7 +13,7 @@ function Observable(value) {
     }
 
     observable._type = "observ"
-    observable._version = 0
+    observable._version = 1
 
     return observable
 
