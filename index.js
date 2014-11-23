@@ -4,6 +4,9 @@ function Observable(value) {
     var listeners = []
     value = value === undefined ? null : value
 
+    observable.get = function () {
+      return value;
+    }
     observable.set = function (v) {
         value = v
 
