@@ -19,8 +19,8 @@ test("using lazyObserv allows lazy playback", function (assert) {
     var obj = lazyObserv(1);
 
     assert.equal(obj.get(), 1)
-    obj.set(2);
-    obj.set(3);
+    obj.lazySet(2);
+    obj.lazySet(3);
 
     var scheduler = obj.scheduler;
     assert.equal(typeof scheduler, "object")

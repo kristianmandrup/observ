@@ -47,7 +47,7 @@ module.exports = function(obj, opts) {
       var lastOp = frameOps[frameOps.length -1];
       var newState = lastOp();
 
-      this.obj._set(newState);
+      this.obj.set(newState);
     }
   };
   outer.scheduled = scheduled;
