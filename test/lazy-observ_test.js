@@ -20,6 +20,9 @@ test("lazy Observ has lazyness API", function (assert) {
     // assert.equal(arr[0], 3)
     assert.equal(typeof obj.lazySet, "function")
 
+    assert.equal(obj.isObservable(), true)
+    assert.equal(obj.isComputed(), false)
+
     assert.equal(obj.isLazy(), true)
     obj = obj.unlazy()
     assert.equal(obj.isLazy(), false)

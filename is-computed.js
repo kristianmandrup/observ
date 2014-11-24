@@ -1,7 +1,10 @@
 module.exports = isComputed;
 
 function isComputed(value) {
-  if (typeof value === 'object' && value._type === 'string') {
+  if (!value) {
+    value = this;
+  }
+  if (typeof value === 'function' && value._type === 'string') {
     if (value._type.match(/computed/)) {
       return true
     }
