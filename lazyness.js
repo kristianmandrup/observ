@@ -1,5 +1,6 @@
 module.exports = {
   lazy: lazy,
+  actLazy: actLazy,
   isLazy: isLazy,
   unlazy: unlazy
 }
@@ -22,6 +23,14 @@ function isLazy() {
 function capitalise(string)
 {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
+function actLazy() {
+  this.lazy()
+  this.basicSet = this.set
+  this.set = this.lazySet
+  return this;
 }
 
 function lazy(opts) {

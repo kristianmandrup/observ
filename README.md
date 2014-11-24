@@ -26,8 +26,8 @@ assert.equal(curr, "new value")
 
 ## What about `dominictarr/observable` ?
 
-Both `observ` & `observable` have the same interface of 
- 
+Both `observ` & `observable` have the same interface of
+
  - `thing()` gets the value
  - `thing.set(...)` sets the value
  - `thing(function (value) { ... })` listens to the value.
@@ -39,7 +39,7 @@ The way `observ` and `observable` differ is in listening.
   `.set()` is invoked
 
 `observ` can be used in a similar fashion to `observable` by using
-  `var watch = require("observ/watch")`. You can then just 
+  `var watch = require("observ/watch")`. You can then just
   `watch(thing, function (value) { ... })` and it will call the
   listener immediately
 
@@ -48,6 +48,38 @@ Both `observ` & `observable` have a computed method with the same
 
  - `require("observable").compute`
  - `require("observ/computed")`
+
+
+## Lazy observable
+
+For API, see `test/lazy-observ-test.js`
+
+```js
+var obj = Observ(7).actLazy();
+
+typeof obj.set // => "function"
+
+obj.isObservable() // => true
+obj.isComputed() // => false
+obj.isLazy() // => true
+
+obj.set(2);
+obj.set(3);
+
+var scheduler = obj.scheduler;
+scheduler.scheduled.anyOps() // => true
+scheduler.scheduled.numOps() // => 2
+
+obj.updateNow();
+
+scheduler.scheduled.anyOps() // => false
+scheduler.scheduled.numOps() // => 0
+
+obj.get() // => 3
+
+obj = obj.unlazy()
+obj.isLazy() // => false
+```
 
 ## Example computed
 
@@ -71,11 +103,11 @@ assert.equal(together(), 7)
 
 ```ocaml
 type Observable<A> :
-  (() => A) & 
+  (() => A) &
   ((Function<A>) => void) & {
     set: (A) => void
   }
-  
+
 
 observ : (A) => Observable<A>
 

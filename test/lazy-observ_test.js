@@ -29,6 +29,37 @@ test("lazy Observ has lazyness API", function (assert) {
     assert.end()
 })
 
+test("Observ can act lazy", function (assert) {
+    var obj = Observ(7).actLazy();
+
+    // assert.equal(arr[0], 3)
+    assert.equal(typeof obj.set, "function")
+
+    assert.equal(obj.isObservable(), true)
+    assert.equal(obj.isComputed(), false)
+
+    assert.equal(obj.isLazy(), true)
+
+    obj.set(2);
+    obj.set(3);
+
+    var scheduler = obj.scheduler;
+    assert.equal(scheduler.scheduled.anyOps(), true)
+    assert.equal(scheduler.scheduled.numOps(), 2)
+
+    obj.updateNow();
+
+    assert.equal(scheduler.scheduled.anyOps(), false)
+    assert.equal(scheduler.scheduled.numOps(), 0)
+
+    assert.equal(obj.get(), 3);
+
+    obj = obj.unlazy()
+    assert.equal(obj.isLazy(), false)
+
+    assert.end()
+})
+
 
 test("Observ can be turned into lazy Observ", function (assert) {
     var obj = Observ(8);
