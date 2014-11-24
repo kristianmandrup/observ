@@ -1,4 +1,5 @@
-var execute = require('./execute')
+var scheduling = require('./scheduling')
+var scheduler  = require('./scheduler')
 
 // customize to fit your scenario (and machine speed of client)
 var PrimitiveScheduler = {
@@ -8,9 +9,9 @@ var PrimitiveScheduler = {
 
   // uses generic scheduler and adds generic execute function
   create: function(obs, opts) {
-    opts = opts || {}
-    opts.execute = execute;
-    return require('./scheduler')(obs, opts)
+    opts = opts || {maxOpsPerFrame: this.maxOpsPerFrame}
+    opts.scheduling = scheduling
+    return scheduler(obs, opts)
   }
 };
 

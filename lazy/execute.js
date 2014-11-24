@@ -1,6 +1,4 @@
-module.exports = execute;
-
-function execute() {
+module.exports = function execute() {
   if (!this.anyOps())
     return;
 

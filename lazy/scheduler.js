@@ -1,16 +1,20 @@
 // can be reused for all observables
 
+var extend = require('xtend')
+
 module.exports = function(obj, opts) {
   opts = opts || {}
   opts.maxOpsPerFrame = opts.maxOpsPerFrame || 500
-  outer = {
+  var outer = {
     obj: obj,
     maxOpsPerFrame: opts.maxOpsPerFrame,
     executeScheduled: function() {
       this.scheduled.execute();
     },
     isWithinCurrentFrame: function(frameOps) {
+      console.log('schduled', this.scheduled)
       frameOps = frameOps || this.scheduled.frameOps();
+
       return frameOps.length < this.maxOpsPerFrame;
     },
     addFrameOp: function(mutator, opts) {
@@ -51,9 +55,13 @@ module.exports = function(obj, opts) {
     },
     anyOps: function() {
       return this.numOps() > 0;
-    },
-    execute: opts.execute
+    }
   };
-  outer.scheduled = scheduled;
+  var scheduling = opts.scheduling;
+  outer.scheduled = scheduled
+
+  outer = extend(outer, scheduling.outer || {})
+  outer.scheduled = extend(outer.scheduled, scheduling.scheduled || {})
+
   return outer;
 }
