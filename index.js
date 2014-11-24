@@ -1,6 +1,8 @@
 module.exports = Observable
 
-var lazyness  = require('./lazyness')
+var lazyness      = require('./lazyness')
+var isObservable  = require('./is-observable')
+var isComputed    = require('./is-computed')
 
 function Observable(value) {
     var listeners = []
@@ -16,6 +18,10 @@ function Observable(value) {
             listeners[i](v)
         }
     }
+
+    // add basic introspection methods
+    observable.isObservable = isObservable
+    observable.isComputed   = isComputed
 
     // add basic lazyness methods
     Object.keys(lazyness).forEach(function(key) {

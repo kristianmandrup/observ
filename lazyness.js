@@ -39,7 +39,7 @@ function lazy(opts) {
   return this;
 }
 
-var allLazyMethods = objMethods.concat('scheduler')
+var allLazyMethods = Object.keys(lazyApi).concat('scheduler')
 
 function unlazy() {
   var self = this;
