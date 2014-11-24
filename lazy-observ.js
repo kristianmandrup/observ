@@ -6,7 +6,7 @@ var lazySet    = require('./lazy/lazy-set')
 var Observ = require('./index')
 
 function ObservLazyPrimitive(primitive, opts, lv) {
-  opts = opts || {}
+  opts = opts || {maxOpsPerFrame: scheduler.maxOpsPerFrame}
   var obs = Observ(primitive, opts, lv);
   var schedulerBuilder = opts.schedulerBuilder || scheduler.create;
 

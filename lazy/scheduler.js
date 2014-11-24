@@ -1,8 +1,8 @@
-var Scheduler = require('./primitive-scheduler')
+// can be reused for all observables
 
 module.exports = function(obj, opts) {
   opts = opts || {}
-  opts.maxOpsPerFrame = opts.maxOpsPerFrame || Scheduler.maxOpsPerFrame || 500
+  opts.maxOpsPerFrame = opts.maxOpsPerFrame || 500
   outer = {
     obj: obj,
     maxOpsPerFrame: opts.maxOpsPerFrame,
@@ -52,17 +52,7 @@ module.exports = function(obj, opts) {
     anyOps: function() {
       return this.numOps() > 0;
     },
-    execute: function() {
-      if (!this.anyOps())
-        return;
-
-      // always use value of last operation
-      var frameOps = this.ops.shift();
-      var lastOp = frameOps[frameOps.length -1];
-      var newState = lastOp();
-      var setIt = this.obj.basicSet || this.obj.set;
-      setIt(newState);
-    }
+    execute: opts.execute
   };
   outer.scheduled = scheduled;
   return outer;
