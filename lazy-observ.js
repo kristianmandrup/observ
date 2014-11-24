@@ -7,10 +7,10 @@ var Observ = require('./index')
 
 function ObservLazyPrimitive(primitive, opts, lv) {
   opts = opts || {}
-  var obj = Observ(primitive, opts, lv);
+  var obs = Observ(primitive, opts, lv);
   var schedulerBuilder = opts.schedulerBuilder || scheduler.create;
 
-  obj.scheduler = new schedulerBuilder(obj, opts);
-  obj.lazySet = lazySet(obj.scheduler);
-  return obj;
+  obs.scheduler = new schedulerBuilder(obs, opts);
+  obs.lazy();
+  return obs;
 }

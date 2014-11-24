@@ -1,8 +1,8 @@
 module.exports = lazySet
 
-function lazySet(scheduler) {
+function lazySet() {
   return function (newValue) {
-    scheduler.schedule(setter(newValue));
+    this.scheduler.schedule(setter(newValue));
   }
 }
 

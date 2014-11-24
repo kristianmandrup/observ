@@ -1,5 +1,7 @@
 module.exports = Observable
 
+var lazyness  = require('./lazyness')
+
 function Observable(value) {
     var listeners = []
     value = value === undefined ? null : value
@@ -14,6 +16,12 @@ function Observable(value) {
             listeners[i](v)
         }
     }
+
+    // add basic lazyness methods
+    Object.keys(lazyness).forEach(function(key) {
+      observable[key] = lazyness[key];
+    })
+    observable._lazy = false
 
     observable._type = "observ"
     observable._version = 1

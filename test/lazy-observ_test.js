@@ -1,6 +1,6 @@
 var test    = require("tape")
-// var Observ  = require("../index")
 
+var Observ  = require("../index")
 var lazyObserv = require("../lazy-observ")
 
 test("lazyObserv is a function", function (assert) {
@@ -11,6 +11,31 @@ test("lazyObserv is a function", function (assert) {
 
 test("calling lazyObserv returns observable: function", function (assert) {
     assert.equal(typeof lazyObserv(1), "function")
+    assert.end()
+})
+
+test("lazy Observ has lazyness API", function (assert) {
+    var obj = lazyObserv(7);
+
+    // assert.equal(arr[0], 3)
+    assert.equal(typeof obj.lazySet, "function")
+
+    assert.equal(obj.isLazy(), true)
+    obj = obj.unlazy()
+    assert.equal(obj.isLazy(), false)
+    assert.end()
+})
+
+
+test("Observ can be turned into lazy Observ", function (assert) {
+    var obj = Observ(8);
+
+    assert.equal(typeof obj.lazySet, "undefined")
+
+    assert.equal(obj.isLazy(), false)
+    obj = obj.lazy()
+    assert.equal(obj.isLazy(), true)
+    assert.equal(typeof obj.lazySet, "function")
     assert.end()
 })
 
