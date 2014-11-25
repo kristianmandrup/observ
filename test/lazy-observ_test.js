@@ -86,8 +86,7 @@ test("using lazyObserv allows lazy playback", function (assert) {
     assert.equal(scheduler.scheduled.anyOps(), true)
     assert.equal(scheduler.scheduled.numOps(), 2)
 
-    scheduler.executeScheduled();
-    // console.log('OBJECT', obj);
+    scheduler.executeNextScheduled();
     assert.equal(obj.get(), 3)
 
     assert.end()

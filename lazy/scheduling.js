@@ -1,7 +1,8 @@
-var execute = require('./execute')
+var api = require('./execute')
 
 module.exports = {
   scheduled: {
-    execute: execute
+    executeNext: api.executeNext,
+    executeAll:  api.executeAll
   }
 }

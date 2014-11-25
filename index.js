@@ -1,6 +1,6 @@
 module.exports = Observable
 
-var lazyness      = require('./lazyness')
+var lazyness      = require('./lazy/lazyness')
 var isObservable  = require('./is-observable')
 var isComputed    = require('./is-computed')
 

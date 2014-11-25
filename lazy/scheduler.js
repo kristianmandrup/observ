@@ -8,13 +8,14 @@ module.exports = function(obj, opts) {
   var outer = {
     obj: obj,
     maxOpsPerFrame: opts.maxOpsPerFrame,
-    executeScheduled: function() {
-      this.scheduled.execute();
+    executeNextScheduled: function() {
+      this.scheduled.executeNext();
+    },
+    executeAllScheduled: function() {
+      this.scheduled.executeAll();
     },
     isWithinCurrentFrame: function(frameOps) {
-      console.log('schduled', this.scheduled)
       frameOps = frameOps || this.scheduled.frameOps();
-
       return frameOps.length < this.maxOpsPerFrame;
     },
     addFrameOp: function(mutator, opts) {
