@@ -1,7 +1,13 @@
-var scheduler   = require("./primitive-scheduler.js")
+var methodsObj = {}
 var methods = ['set']
-var api = require('./lazy-api')
+methods.forEach(function (key) {
+  methodsObj[key] = require('./lazy-' + key)
+})
 
-var lazyApi = api({scheduler: scheduler, methods: methods})
+var opts = {
+  methods: methodsObj,
+  scheduler: require("./scheduler-builder.js")
+}
+var apiBuilder = require('./lazy-api')
 
-module.exports = lazyApi
+module.exports = apiBuilder(opts)

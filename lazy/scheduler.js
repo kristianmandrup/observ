@@ -56,6 +56,11 @@ module.exports = function(obj, opts) {
     },
     anyOps: function() {
       return this.numOps() > 0;
+    },
+    executeAll: function () {
+      while(this.anyOps()) {
+        this.executeNext();
+      }
     }
   };
   var scheduling = opts.scheduling;

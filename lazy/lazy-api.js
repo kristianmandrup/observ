@@ -6,6 +6,7 @@ module.exports = function(opts) {
 
   api.lazy    = makeLazy(opts.methods, opts.scheduler)
   api.unlazy  = makeUnlazy(opts.methods)
+  api.immediate = api.unlazy
 
   return api;
 }
@@ -36,9 +37,16 @@ function updateNow() {
 }
 
 
-function makeLazy(methods, scheduler) {
+function makeLazy(methodsObj, scheduler) {
+  if (!typeof methodsObj === 'object') {
+    throw Error("makeLazy: methodsObj must be an Object, was:" + typeof(methodsObj))
+  }
+
+  if (!typeof scheduler === 'object') {
+    throw Error("makeLazy: scheduler must be an Object, was:" + typeof(scheduler))
+  }
+
   return function lazy(opts) {
-    console.log('lazy', this.isLazy())
     // if I'm already lazy just return me!
     if (this.isLazy()) {
       return this;
@@ -46,7 +54,6 @@ function makeLazy(methods, scheduler) {
 
     opts = opts || {}
 
-    console.log('add scheduler...')
     // add scheduler
     var schedulerBuilder = opts.schedulerBuilder || scheduler.create;
     this.scheduler   = new schedulerBuilder(this, opts);
@@ -57,10 +64,9 @@ function makeLazy(methods, scheduler) {
 
     // add specific lazy methods for main API
     var self = this
-    console.log('make lazy', methods)
-    methods.forEach(function(name) {
+    Object.keys(methodsObj).forEach(function(name) {
       var fullName = "lazy" + capitalise(name);
-      var lazyMethodBuilder = require('./lazy-' + name)
+      var lazyMethodBuilder = methodsObj[name]
       self[fullName] = lazyMethodBuilder()
     })
     // mark observable is lazy
@@ -72,7 +78,11 @@ function makeLazy(methods, scheduler) {
 function noOp() {
 }
 
-function makeUnlazy(methods) {
+function makeUnlazy(methodsObj) {
+  if (!typeof methodsObj === 'object') {
+    throw Error("makeUnlazy: methodsObj must be an Object, was:" + typeof(methodsObj))
+  }
+
   return function unlazy() {
     // if I'm already not lazy just return me!
     if (!this.isLazy()) {
@@ -80,7 +90,13 @@ function makeUnlazy(methods) {
     }
     // execute all scheduled operations
     this.updateAll();
-    // remove lazySet
+
+    var self = this
+    // remove all lazy mutation methods!
+    Object.keys(methodsObj).forEach(function(name) {
+      var fullName = "lazy" + capitalise(name);
+      delete self[fullName]
+    })
 
     // remove scheduler
     delete this.scheduler
